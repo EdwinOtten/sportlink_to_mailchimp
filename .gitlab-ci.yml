@@ -7,7 +7,7 @@ pages:
 
   stage: deploy
   script:
-#  - npm install -g @angular/cli@8.3.25
+  - npm install -g @angular/cli@8.3.25
   - npm install
   - ng build
   - mv dist/data-converter/* public/
