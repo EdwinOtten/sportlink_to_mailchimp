@@ -1,4 +1,4 @@
-image: node:12.6.1
+image: node:12.16.1
 
 pages:
   cache:
