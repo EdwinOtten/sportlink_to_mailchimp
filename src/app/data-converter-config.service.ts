@@ -45,8 +45,8 @@ export class DataConverterConfigService implements IDataConverterService {
       }
 
       return {
-        columns: ['LATJED', 'Stadje'],
-        rows: data.map(row => ({ LATJED: row.LatD, Stadje: row.City }))
+        columns: Object.getOwnPropertyNames(data[0]),
+        rows: data
       };
   }
 }
