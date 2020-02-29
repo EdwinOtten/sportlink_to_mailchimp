@@ -3,9 +3,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import * as parse from 'csv-parse/lib/sync';
-import { isNullOrUndefined } from 'util';
-import { IDataConverterService } from './interfaces/idata-converter-service';
+import * as Papa from 'papaparse';
+import { IDataConverterService, PreviewResult, OutputResult } from './interfaces/idata-converter-service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,20 +32,49 @@ export class DataConverterConfigService implements IDataConverterService {
     }
   };
 
-  convertData(dataAsString: string): { columns: string[], rows: any} {
-      const data = parse(dataAsString, {
-        columns: true,
-        skip_empty_lines: true,
-        trim: true
+  async convertFileToPreview(file: File): Promise<PreviewResult> {
+    const parseResult = await this.parseData(file);
+    return {
+      columns: ['Lidnummer', 'Achternaam', 'Email'],
+      rows: parseResult.data.map(row => ({
+        Lidnummer: row.Roepnaam,
+        Achternaam: (((row['Tussenvoegsel(s)'] ? row['Tussenvoegsel(s)'] : '') + ' ' + row.Achternaam) as string).trim(),
+        Email: row['E-mail'],
+      }))
+    };
+  }
+
+  async convertFileToOutput(file: File): Promise<OutputResult> {
+    const data = await this.convertFileToPreview(file);
+    const csvData = Papa.unparse(data.rows, {
+      quotes: true
+    });
+
+    const originalFilename = file.name.substring(0, file.name.lastIndexOf('.'));
+    return {
+      mimetype: 'text/csv;charset=utf-8;',
+      filename: originalFilename + '_converted_to_mailchimp.csv',
+      data: csvData
+    };
+  }
+
+  private async parseData(file: File): Promise<Papa.ParseResult> {
+      return new Promise((complete, error) => {
+        Papa.parse(file, {
+          skipEmptyLines: true,
+          dynamicTyping: true,
+          quoteChar: '|',
+          delimiter: ';',
+          header: true,
+          transformHeader(header) {
+            return header.trim().replace('"', '').replace('"', '');
+          },
+          transform(value) {
+            return value.trim().replace('"', '').replace('"', '');
+          },
+          error,
+          complete
+        });
       });
-
-      if (isNullOrUndefined(data)) {
-        throw Error('Failed to parse CSV data');
-      }
-
-      return {
-        columns: ['LATJED', 'Stadje'],
-        rows: data.map(row => ({ LATJED: row.LatD, Stadje: row.City }))
-      };
   }
 }

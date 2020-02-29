@@ -10,7 +10,7 @@
 
     <mat-vertical-stepper linear="true" #stepper>
 
-        <mat-step [completed]="firstStepCompleted">
+        <mat-step [completed]="false">
           <ng-template matStepLabel>{{config.labels.sourceStep.title}}</ng-template>
           <p>{{config.labels.sourceStep.description}}</p>
           <mat-form-field class="example-full-width" [style.width.px]="150">
@@ -26,12 +26,10 @@
               cdkAutosizeMaxRows="3"
               [value]="sourceFileContents"></textarea>
           </mat-form-field>
-          <mat-error *ngIf="!firstStepCompleted">{{browseError}}</mat-error>
-          <br />
-          <button mat-button matStepperNext [disabled]="!firstStepCompleted">Next</button>
+          <mat-error *ngIf="sourceError">{{sourceError}}</mat-error>
         </mat-step>
 
-        <mat-step>
+        <mat-step [completed]="dataSource != null">
           <ng-template matStepLabel>{{config.labels.previewStep.title}}</ng-template>
           <p>{{config.labels.previewStep.description}}</p>
           <br />
@@ -52,11 +50,11 @@
             <button mat-button matStepperNext>Next</button>
         </mat-step>
 
-        <mat-step>
+        <mat-step [completed]="dataSource != null">
           <ng-template matStepLabel>{{config.labels.outputStep.title}}</ng-template>
           <p>{{config.labels.outputStep.description}}</p>
+          <button mat-button (click)="downloadFile()">Download</button>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
             <button mat-button (click)="stepper.reset()">Reset</button>
           </div>
         </mat-step>

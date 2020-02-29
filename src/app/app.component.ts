@@ -1,7 +1,9 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, AfterViewInit, NgZone } from '@angular/core';
 import { DataConverterConfigService } from './data-converter-config.service';
 import { isNullOrUndefined } from 'util';
 import { IDataConverterService } from './interfaces/idata-converter-service';
+import { MatVerticalStepper } from '@angular/material';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-root',
@@ -9,22 +11,31 @@ import { IDataConverterService } from './interfaces/idata-converter-service';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   fileLocation = '';
   sourceFileContents = '';
   destinationFileContents = '';
-  progressMode = null;
-  progressValue = 0;
+  progressMode: 'determinate' | 'indeterminate' | 'buffer' | 'query' = 'determinate';
+  progressValue = 4;
   config: IDataConverterService;
 
-  firstStepCompleted = false;
-  browseError: string;
+  sourceError: string;
+  currentFile: File;
 
   columns: string[];
   dataSource: any[];
 
-  constructor(private dataConverterService: DataConverterConfigService) {
+  @ViewChild('stepper', {static: false}) private stepper: MatVerticalStepper;
+
+  constructor(private ngZone: NgZone,
+              private dataConverterService: DataConverterConfigService) {
     this.config = dataConverterService;
+  }
+
+  ngAfterViewInit(): void {
+    this.stepper.selectionChange.subscribe((event: StepperSelectionEvent) => {
+      this.progressValue = 4 + (48 * event.selectedIndex);
+    });
   }
 
   fileInputAccept(): string {
@@ -32,51 +43,72 @@ export class AppComponent {
   }
 
   openFile(event) {
-    this.setProgress('buffer', 0);
-    this.firstStepCompleted = false;
+    this.currentFile = null;
+    this.progressMode = 'buffer';
+    this.dataSource = null;
+    this.columns = null;
 
     for (const file of event.target.files) {
-      this.readFile(file);
+      this.processFile(file);
       break; // we only support reading one file at a time
     }
   }
 
-  readFile(file: any) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.sourceFileContents = reader.result as string;
-      this.handleFileData(this.sourceFileContents);
-    };
-    reader.readAsText(file);
-  }
-
-  handleFileData(dataAsString: string) {
+  async processFile(file: File) {
     try {
-      this.setProgress('determinate', 11);
-      const data = this.dataConverterService.convertData(dataAsString);
-      this.setProgress('determinate', 22);
+      this.currentFile = file;
+      const data = await this.dataConverterService.convertFileToPreview(file);
 
       if (!isNullOrUndefined(data)) {
-        this.browseError = null;
+        this.sourceError = null;
+        this.progressMode = 'determinate';
         this.showPreview(data.columns, data.rows);
       }
     } catch (e) {
-      this.browseError = e;
-      this.setProgress('determinate', 0);
+      this.currentFile = null;
+      this.progressMode = 'determinate';
+      this.sourceError = e;
     }
   }
 
   showPreview(columns: string[], data: any[]) {
     this.dataSource = data;
     this.columns = columns;
-    this.firstStepCompleted = true;
-    this.setProgress('determinate', 33);
+
+    this.ngZone.run(() => {
+      this.stepper.selected.completed = true;
+      this.stepper.selectedIndex = 1;
+    });
   }
 
-  setProgress(mode: 'determinate' | 'indeterminate' | 'buffer' | 'query', value?: number) {
-    this.progressMode = mode;
-    if (value) {
-      this.progressValue = value;
+  async downloadFile() {
+    const output = await this.dataConverterService.convertFileToOutput(this.currentFile);
+    this.openSaveFileDialog(output.data, output.filename, output.mimetype);
+  }
+
+  openSaveFileDialog(data: any, filename: string, mimetype: string) {
+
+    if (!data) { return; }
+
+    const blob = data.constructor !== Blob
+      ? new Blob([data], {type: mimetype || 'application/octet-stream'})
+      : data ;
+
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, filename);
+      return;
     }
+
+    const lnk = document.createElement('a');
+    const url = window.URL;
+
+    if (mimetype) {
+      lnk.type = mimetype;
+    }
+
+    lnk.download = filename || 'untitled';
+    lnk.href = url.createObjectURL(blob);
+    lnk.dispatchEvent(new MouseEvent('click'));
+    setTimeout(url.revokeObjectURL.bind(url, lnk.href));
   }
 }

@@ -19,5 +19,17 @@ export interface IDataConverterService {
     }
   };
 
-  convertData(dataAsString: string): { columns: string[], rows: any };
+  convertFileToPreview(file: File): Promise<PreviewResult>;
+  convertFileToOutput(file: File): Promise<OutputResult>;
+}
+
+export interface PreviewResult {
+  columns: string[];
+  rows: any;
+}
+
+export interface OutputResult {
+  data: any;
+  filename: string;
+  mimetype: string;
 }
