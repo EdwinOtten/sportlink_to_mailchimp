@@ -34,13 +34,15 @@ export class DataConverterConfigService implements IDataConverterService {
 
   async convertFileToPreview(file: File): Promise<PreviewResult> {
     const parseResult = await this.parseData(file);
-    return {
-      columns: ['Lidnummer', 'Achternaam', 'Email'],
-      rows: parseResult.data.map(row => ({
+    const data = parseResult.data.map(row => ({
         Lidnummer: row.Roepnaam,
         Achternaam: (((row['Tussenvoegsel(s)'] ? row['Tussenvoegsel(s)'] : '') + ' ' + row.Achternaam) as string).trim(),
         Email: row['E-mail'],
-      }))
+      }));
+
+    return {
+      columns: Object.getOwnPropertyNames(data[0]),
+      rows: data
     };
   }
 
