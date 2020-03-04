@@ -35,9 +35,10 @@ export class DataConverterConfigService implements IDataConverterService {
   async convertFileToPreview(file: File): Promise<PreviewResult> {
     const parseResult = await this.parseData(file);
     const data = parseResult.data.map(row => ({
-        Lidnummer: row.Roepnaam,
-        Achternaam: (((row['Tussenvoegsel(s)'] ? row['Tussenvoegsel(s)'] : '') + ' ' + row.Achternaam) as string).trim(),
-        Email: row['E-mail'],
+        'Email Address': row['E-mail'],
+        'First Name': row['Roepnaam'],
+        'Last Name': (((row['Tussenvoegsel(s)'] ? row['Tussenvoegsel(s)'] : '') + ' ' + row.Achternaam) as string).trim(),
+        'Tags': 'not yet implemented'
       }));
 
     return {
