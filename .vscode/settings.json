@@ -1,0 +1,10 @@
+{
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
+    "eslint.validate": ["javascript", "typescript", "html", "css"],
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    }
+}
