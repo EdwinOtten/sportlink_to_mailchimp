@@ -3,40 +3,10 @@ mat-card {
   margin: 20px auto;
 }
 
-mat-form-field {
-  width: 100%;
-}
-
 footer {
   text-align: center;
 
   a {
     color: #3a3a3a;
   }
-}
-
-table {
-  width: 100%
-}
-
-.table-container {
-  height: 300px;
-  overflow: auto;
-}
-
-textarea.mat-input-element {
-  background: #eaeaea;
-  padding: 20px !important;
-  font-family: monospace;
-  color: #585f86;
-}
-
-.browseButton.mat-raised-button {
-  color: #ffffff;
-  background-color: #3f51b5;
-  margin-left: 20px !important;
-}
-
-.mat-form-field-appearance-legacy .mat-form-field-underline {
-  background-color: transparent;
 }
