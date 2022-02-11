@@ -8,5 +8,6 @@ Tool to convert a Sportlink export to a file that can be imported into Mailchimp
 The prerequisites of this application are equal to the [Angular Framework prerequisites](https://angular.io/guide/setup-local#prerequisites).
 
 1. Clone this repository to your computer (or download as .zip)
-2. Install dependencies by running `npm install`
-3. Run `ng serve -o`. This will start a dev server and opens the application in your browser.
+2. Install Angular CLI by running `npm install -g @angular/cli`
+3. Install dependencies by running `npm install`
+4. Run `ng serve -o`. This will start a dev server and opens the application in your browser.
