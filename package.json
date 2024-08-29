@@ -24,7 +24,6 @@
     "angular-data-converter-component": "0.0.2",
     "buffer": "^5.4.3",
     "core-js": "^2.5.4",
-    "node-sass": "^4.12.0",
     "papaparse": "^5.1.1",
     "rxjs": "~6.5.4",
     "sportlink-to-mailchimp-converter": "0.0.4",
