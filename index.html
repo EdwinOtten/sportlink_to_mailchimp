@@ -14,14 +14,43 @@
             athleticsMembershipTypes: ['Atletiek'],
         });
 
-        // inputFile should be a File object as documented on https://developer.mozilla.org/en-US/docs/Web/API/File
-        // When user selects a file, run this to convert it:
-        // const output = converter.convertFileToOutput(inputFile);
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const contents = e.target.result;
+                    const lines = contents.split('\n').slice(0, 6);
+                    document.getElementById('file-preview').textContent = lines.join('\n');
+
+                    // Convert the selected file
+                    converter.convertFileToOutput(file).then(output => {
+                        const outputLines = output.split('\n').slice(0, 6);
+                        document.getElementById('converted-preview').textContent = outputLines.join('\n');
+                    });
+                };
+                reader.readAsText(file);
+            }
+        }
     </script>
+    <style>
+        pre {
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Sportlink CSV naar Mailchimp CSV</h1>
+    <input type="file" id="file-input" accept=".csv">
+    <pre id="file-preview"></pre>
+    <pre id="converted-preview"></pre>
+    <script>
+        document.getElementById('file-input').addEventListener('change', handleFileSelect);
+    </script>
 </body>
 
 </html>
