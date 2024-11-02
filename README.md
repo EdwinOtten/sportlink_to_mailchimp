@@ -5,9 +5,15 @@ Tool to convert a Sportlink export to a file that can be imported into Mailchimp
 ![Screenshot of the application](https://raw.githubusercontent.com/EdwinOtten/sportlink_to_mailchimp/master/readme_assets/screenshot.png)
 
 ## How to use
-The prerequisites of this application are equal to the [Angular Framework prerequisites](https://angular.io/guide/setup-local#prerequisites).
+_TODO_
 
-1. Clone this repository to your computer (or download as .zip)
-2. Install Angular CLI by running `npm install -g @angular/cli`
-3. Install dependencies by running `npm install`
-4. Run `ng serve -o`. This will start a dev server and opens the application in your browser.
+## Architectural guidelines
+- The application consist of only **one** static HTML page (a Single Page Application) that does not requires any compiling/transpiling/building.
+- The application can only use 2 external dependencies:
+  1. The `sportlink-to-mailchimp-converter` NPM package
+  2. HTMX
+- The application is responsive (usable on both desktop and mobile)
+- CSS Flexbox is used to realize a responsive layout
+
+## Trademarks
+All trademarks, inlcuding (but not limited to) _Mailchimp_ and _Sportlink_, are the property of their respective owners.

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sportlink CSV naar Mailchimp CSV</title>
+    <script
+        src="https://cdn.jsdelivr.net/npm/sportlink-to-mailchimp-converter@0.2/sportlink-to-mailchimp-converter.umd.js"></script>
+    <script>
+        const converter = new SportlinkToMailchimpConverter.SportlinkToMailchimpConverter({
+            nonAthleticsMembershipTypes: ['Gastlid', 'Recreanten', 'Overigen'],
+            athleticsMembershipTypes: ['Atletiek'],
+        });
+
+        // inputFile should be a File object as documented on https://developer.mozilla.org/en-US/docs/Web/API/File
+        // When user selects a file, run this to convert it:
+        // const output = converter.convertFileToOutput(inputFile);
+    </script>
+</head>
+
+<body>
+    <h1>Sportlink CSV naar Mailchimp CSV</h1>
+</body>
+
+</html>
