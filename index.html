@@ -34,6 +34,31 @@
         }
     </script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2e004f;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #2e004f;
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
         pre {
             border: 1px solid lightgray;
             border-radius: 5px;
@@ -44,13 +69,15 @@
 </head>
 
 <body>
-    <h1>Sportlink CSV naar Mailchimp CSV</h1>
-    <input type="file" id="file-input" accept=".csv">
-    <pre id="file-preview"></pre>
-    <pre id="converted-preview"></pre>
-    <script>
-        document.getElementById('file-input').addEventListener('change', handleFileSelect);
-    </script>
+    <div class="container">
+        <h1>Sportlink CSV naar Mailchimp CSV</h1>
+        <input type="file" id="file-input" accept=".csv">
+        <pre id="file-preview"></pre>
+        <pre id="converted-preview"></pre>
+        <script>
+            document.getElementById('file-input').addEventListener('change', handleFileSelect);
+        </script>
+    </div>
 </body>
 
 </html>
