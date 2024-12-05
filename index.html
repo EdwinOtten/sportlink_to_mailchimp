@@ -25,7 +25,7 @@
 
                     // Convert the selected file
                     converter.convertFileToPreview(file).then(preview => {
-                        // TODO: display preview
+                        displayPreviewTable(preview);
                     });
 
                     // converter.convertFileToOutput(file).then(output => {
@@ -34,6 +34,38 @@
                 };
                 reader.readAsText(file);
             }
+        }
+
+        function displayPreviewTable(preview) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            const headerRow = document.createElement('tr');
+            preview.columns.forEach(column => {
+                const th = document.createElement('th');
+                th.textContent = column;
+                th.style.textAlign = 'left'; // Align labels in <th> elements on the left
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            preview.rows.forEach(row => {
+                const tr = document.createElement('tr');
+                preview.columns.forEach(column => {
+                    const td = document.createElement('td');
+                    td.textContent = row[column];
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            const previewContainer = document.getElementById('converted-preview');
+            previewContainer.innerHTML = '';
+            previewContainer.appendChild(table);
         }
     </script>
     <style>
@@ -67,6 +99,10 @@
             border-radius: 5px;
             margin: 10px 0;
             padding: 10px;
+        }
+
+        th {
+            text-align: left; /* Align labels in <th> elements on the left */
         }
     </style>
 </head>
