@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sportlink CSV naar Mailchimp CSV</title>
     <script
-        src="https://cdn.jsdelivr.net/npm/sportlink-to-mailchimp-converter@0.2.3/sportlink-to-mailchimp-converter.umd.js"></script>
+        src="https://cdn.jsdelivr.net/npm/sportlink-to-mailchimp-converter@0.2.4/sportlink-to-mailchimp-converter.umd.js"></script>
     <script>
         const converter = new SportlinkToMailchimpConverter.SportlinkToMailchimpConverter({
             nonAthleticsMembershipTypes: ['Gastlid', 'Recreanten', 'Overigen'],
@@ -24,10 +24,13 @@
                     document.getElementById('file-preview').textContent = lines.join('\n');
 
                     // Convert the selected file
-                    converter.convertFileToOutput(file).then(output => {
-                        const outputLines = output.split('\n').slice(0, 6);
-                        document.getElementById('converted-preview').textContent = outputLines.join('\n');
+                    converter.convertFileToPreview(file).then(preview => {
+                        // TODO: display preview
                     });
+
+                    // converter.convertFileToOutput(file).then(output => {
+                    // TODO: download output (File object) to computer
+                    // });
                 };
                 reader.readAsText(file);
             }
