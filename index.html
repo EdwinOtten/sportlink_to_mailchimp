@@ -29,9 +29,7 @@
                     });
 
                     // Show the preview sections and download button
-                    document.getElementById('file-preview').classList.remove('hidden');
-                    document.getElementById('converted-preview').classList.remove('hidden');
-                    document.getElementById('download-button').classList.remove('hidden');
+                    document.getElementById('results').classList.remove('hidden');
                 };
                 reader.readAsText(file);
             }
@@ -135,9 +133,13 @@
     <div class="container">
         <h1>Sportlink CSV naar Mailchimp CSV</h1>
         <input type="file" id="file-input" accept=".csv">
-        <pre id="file-preview" class="hidden"></pre>
-        <pre id="converted-preview" class="hidden"></pre>
-        <button id="download-button" class="hidden" onclick="downloadConvertedFile()">Download Converted File</button>
+        <div id="results" class="hidden">
+            <h2>Voorbeeld Sportlink bestand</h2>
+            <pre id="file-preview"></pre>
+            <h2>Voorbeeld Mailchimp bestand</h2>
+            <pre id="converted-preview"></pre>
+            <button id="download-button" onclick="downloadConvertedFile()">Download Mailchimp bestand</button>
+        </div>
         <script>
             document.getElementById('file-input').addEventListener('change', handleFileSelect);
         </script>
