@@ -5,7 +5,7 @@ Tool to convert a Sportlink export to a file that can be imported into Mailchimp
 ![Screenshot of the application](https://raw.githubusercontent.com/EdwinOtten/sportlink_to_mailchimp/master/readme_assets/screenshot.png)
 
 ## How to use
-_TODO_
+Go to [edwinotten.github.io/sportlink_to_mailchimp/](https://edwinotten.github.io/sportlink_to_mailchimp/) and give it a try (you can use [example-input.csv](example-input.csv)).
 
 ## Architectural guidelines
 - The application consist of only **one** static HTML page (a Single Page Application) that does not requires any compiling/transpiling/building.
