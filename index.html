@@ -74,10 +74,11 @@
             const file = fileInput.files[0];
             if (file) {
                 converter.convertFileToOutput(file).then(output => {
-                    const url = URL.createObjectURL(output);
+                    const blob = new Blob([output.data], { type: output.mimetype });
+                    const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = output.name;
+                    a.download = 'converted.csv';
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
