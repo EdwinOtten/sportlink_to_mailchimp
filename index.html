@@ -20,7 +20,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const contents = e.target.result;
-                    const lines = contents.split('\n').slice(0, 6);
+                    const lines = contents.split('\n').slice(0, 10);
                     document.getElementById('file-preview').textContent = lines.join('\n');
 
                     // Convert the selected file
@@ -28,9 +28,10 @@
                         displayPreviewTable(preview);
                     });
 
-                    // converter.convertFileToOutput(file).then(output => {
-                    // TODO: download output (File object) to computer
-                    // });
+                    // Show the preview sections and download button
+                    document.getElementById('file-preview').classList.remove('hidden');
+                    document.getElementById('converted-preview').classList.remove('hidden');
+                    document.getElementById('download-button').classList.remove('hidden');
                 };
                 reader.readAsText(file);
             }
@@ -50,7 +51,7 @@
             });
             thead.appendChild(headerRow);
 
-            preview.rows.forEach(row => {
+            preview.rows.slice(0, 10).forEach(row => {
                 const tr = document.createElement('tr');
                 preview.columns.forEach(column => {
                     const td = document.createElement('td');
@@ -66,6 +67,23 @@
             const previewContainer = document.getElementById('converted-preview');
             previewContainer.innerHTML = '';
             previewContainer.appendChild(table);
+        }
+
+        function downloadConvertedFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            if (file) {
+                converter.convertFileToOutput(file).then(output => {
+                    const url = URL.createObjectURL(output);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = output.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
         }
     </script>
     <style>
@@ -105,6 +123,10 @@
         th {
             text-align: left; /* Align labels in <th> elements on the left */
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
@@ -112,8 +134,9 @@
     <div class="container">
         <h1>Sportlink CSV naar Mailchimp CSV</h1>
         <input type="file" id="file-input" accept=".csv">
-        <pre id="file-preview"></pre>
-        <pre id="converted-preview"></pre>
+        <pre id="file-preview" class="hidden"></pre>
+        <pre id="converted-preview" class="hidden"></pre>
+        <button id="download-button" class="hidden" onclick="downloadConvertedFile()">Download Converted File</button>
         <script>
             document.getElementById('file-input').addEventListener('change', handleFileSelect);
         </script>
