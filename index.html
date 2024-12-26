@@ -20,7 +20,7 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const contents = e.target.result;
-                    const lines = contents.split('\n').slice(0, 10);
+                    const lines = contents.split('\n').slice(0, 11);
                     document.getElementById('file-preview').textContent = lines.join('\n');
 
                     // Convert the selected file
