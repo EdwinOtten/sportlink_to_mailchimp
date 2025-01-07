@@ -8,6 +8,7 @@
     <title>Sportlink CSV naar Mailchimp CSV</title>
     <script
         src="https://cdn.jsdelivr.net/npm/sportlink-to-mailchimp-converter@0.2.4/sportlink-to-mailchimp-converter.umd.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <script>
         const converter = new SportlinkToMailchimpConverter.SportlinkToMailchimpConverter({
             nonAthleticsMembershipTypes: ['Gastlid', 'Recreanten', 'Overigen'],
@@ -30,6 +31,9 @@
 
                     // Show the preview sections and download button
                     document.getElementById('results').classList.remove('hidden');
+
+                    // Hide the file input button
+                    document.getElementById('file-input').classList.add('hidden');
                 };
                 reader.readAsText(file);
             }
@@ -84,49 +88,11 @@
                 });
             }
         }
+
+        function resetApplication() {
+            location.reload();
+        }
     </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #f9f9f9;
-            padding: 20px;
-        }
-
-        h1 {
-            color: #2e004f;
-            margin: 20px 0;
-        }
-
-        button {
-            background-color: #2e004f;
-            color: white;
-            border-radius: 5px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        pre {
-            border: 1px solid lightgray;
-            border-radius: 5px;
-            margin: 10px 0;
-            padding: 10px;
-            overflow-x: auto; /* Enable horizontal scrolling */
-        }
-
-        th {
-            text-align: left; /* Align labels in <th> elements on the left */
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
@@ -139,6 +105,7 @@
             <h2>Voorbeeld Mailchimp bestand</h2>
             <pre id="converted-preview"></pre>
             <button id="download-button" onclick="downloadConvertedFile()">Download Mailchimp bestand</button>
+            <button id="reset-button" onclick="resetApplication()" style="background-color: grey;">Reset</button>
         </div>
         <script>
             document.getElementById('file-input').addEventListener('change', handleFileSelect);
